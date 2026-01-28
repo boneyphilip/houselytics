@@ -1,0 +1,44 @@
+name: Phase 0 – Repository & Dataset Setup
+description: Setup project repository, folder structure, and ingest official dataset
+title: "[Phase 0] Repository and Dataset Setup"
+labels: ["phase-0", "setup"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ##  Goal
+        Prepare the project foundation with proper structure and official dataset.
+
+  - type: checkboxes
+    attributes:
+      label:  Repository & Structure
+      options:
+        - label: Create GitHub repository
+        - label: Clone repository locally
+        - label: Create folders (data/raw, data/metadata, notebooks, app_pages, src)
+        - label: Add .gitignore and README.md
+
+  - type: checkboxes
+    attributes:
+      label:  Dataset Intake
+      options:
+        - label: Extract downloaded ZIP file
+        - label: Move house_prices_records.csv to data/raw/
+        - label: Move inherited_houses.csv to data/raw/
+        - label: Move house-metadata.txt to data/metadata/
+
+  - type: checkboxes
+    attributes:
+      label:  Validation
+      options:
+        - label: Confirm SalePrice exists in training dataset
+        - label: Confirm inherited houses file has no SalePrice
+        - label: Review metadata file
+
+  - type: markdown
+    attributes:
+      value: |
+        ###  Acceptance Criteria
+        - Project structure is complete  
+        - Dataset is correctly placed  
+        - Initial commit pushed
