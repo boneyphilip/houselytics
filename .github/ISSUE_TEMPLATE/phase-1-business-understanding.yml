@@ -1,0 +1,33 @@
+name: Phase 1 – Business Understanding
+description: Define business problem, stakeholders, and project goals
+title: "[Phase 1] Business Understanding & Project Context"
+labels: ["phase-1", "business"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Goal
+        Clearly define the business problem, stakeholders, and value of the project.
+
+  - type: checkboxes
+    attributes:
+      label: Business Context
+      options:
+        - label: Identify client and stakeholders
+        - label: Describe the business problem
+        - label: Define project goals and success criteria
+
+  - type: checkboxes
+    attributes:
+      label: Business Requirements
+      options:
+        - label: Define Business Requirement 1 (Data Analysis)
+        - label: Define Business Requirement 2 (Prediction)
+        - label: Map requirements to project deliverables
+
+  - type: checkboxes
+    attributes:
+      label: Documentation
+      options:
+        - label: Update README with business context
+        - label: Write project overview and objectives
