@@ -1,0 +1,33 @@
+name: Phase 6 – Deployment & Final Review
+description: Deploy application and complete final documentation
+title: "[Phase 6] Deployment & Final Review"
+labels: ["phase-6", "deployment"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Goal
+        Deploy the application and ensure project readiness for submission.
+
+  - type: checkboxes
+    attributes:
+      label: Deployment
+      options:
+        - label: Configure Streamlit app
+        - label: Create requirements.txt
+        - label: Deploy application successfully
+
+  - type: checkboxes
+    attributes:
+      label: Final Review
+      options:
+        - label: Complete README documentation
+        - label: Verify all assessment criteria met
+        - label: Final testing and cleanup
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Acceptance Criteria
+        - Live deployed app
+        - Project ready for submission
