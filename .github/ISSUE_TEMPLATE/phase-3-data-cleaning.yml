@@ -1,0 +1,34 @@
+name: Phase 3 – Data Cleaning & Feature Engineering
+description: Clean data, handle missing values, and prepare features for modeling
+title: "[Phase 3] Data Cleaning & Feature Engineering"
+labels: ["phase-3", "data-cleaning"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Goal
+        Prepare a clean, model-ready dataset.
+
+  - type: checkboxes
+    attributes:
+      label: Data Cleaning
+      options:
+        - label: Identify missing values
+        - label: Handle missing values appropriately
+        - label: Detect and handle outliers
+        - label: Validate data consistency
+
+  - type: checkboxes
+    attributes:
+      label: Feature Engineering
+      options:
+        - label: Encode categorical variables
+        - label: Scale numerical features if needed
+        - label: Save cleaned dataset
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Acceptance Criteria
+        - Clean dataset ready for modeling
+        - Cleaning steps documented in notebook
