@@ -1,0 +1,33 @@
+name: Phase 5 – Modeling & Evaluation
+description: Build, tune, and evaluate machine learning models
+title: "[Phase 5] Modeling & Evaluation"
+labels: ["phase-5", "modeling"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Goal
+        Train and evaluate a machine learning model that meets business requirements.
+
+  - type: checkboxes
+    attributes:
+      label: Model Development
+      options:
+        - label: Split data into train and test sets
+        - label: Build baseline regression model
+        - label: Apply GridSearchCV for tuning
+
+  - type: checkboxes
+    attributes:
+      label: Model Evaluation
+      options:
+        - label: Evaluate model using R² score
+        - label: Plot Actual vs Predicted values
+        - label: Confirm model meets success criteria
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Acceptance Criteria
+        - Trained model saved
+        - Evaluation results documented
