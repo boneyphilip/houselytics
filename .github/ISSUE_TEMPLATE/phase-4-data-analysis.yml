@@ -1,0 +1,33 @@
+name: Phase 4 – Data Analysis & Visualisation
+description: Explore relationships and generate insights using visualisations
+title: "[Phase 4] Data Analysis & Visualisation"
+labels: ["phase-4", "eda"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Goal
+        Extract insights and answer business questions using data visualisation.
+
+  - type: checkboxes
+    attributes:
+      label: Exploratory Analysis
+      options:
+        - label: Analyse SalePrice distribution
+        - label: Identify key correlated features
+        - label: Generate summary statistics
+
+  - type: checkboxes
+    attributes:
+      label: Visualisation
+      options:
+        - label: Create correlation heatmap
+        - label: Plot key features vs SalePrice
+        - label: Add interpretation for each plot
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Acceptance Criteria
+        - At least 4 meaningful plots created
+        - Insights documented clearly
