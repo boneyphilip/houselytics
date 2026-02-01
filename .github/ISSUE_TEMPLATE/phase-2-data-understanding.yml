@@ -1,0 +1,42 @@
+name: Phase 2 – Data Understanding & Exploration
+description: Explore and understand the dataset before cleaning and modeling
+title: "[Phase 2] Data Understanding & Exploration"
+labels: ["phase-2", "data-understanding"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Goal
+        Understand the structure, content, and quality of the dataset.
+
+  - type: checkboxes
+    attributes:
+      label: Dataset Loading
+      options:
+        - label: Create data understanding notebook
+        - label: Load training dataset
+        - label: Load inherited houses dataset
+
+  - type: checkboxes
+    attributes:
+      label: Data Inspection
+      options:
+        - label: Check dataset shape and column names
+        - label: Review data types
+        - label: Identify missing values
+
+  - type: checkboxes
+    attributes:
+      label: Target Variable Validation
+      options:
+        - label: Confirm SalePrice exists in training dataset
+        - label: Confirm SalePrice does not exist in inherited dataset
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Acceptance Criteria
+        - Dataset is successfully loaded
+        - Initial observations are documented
+        - No data cleaning performed at this stage
