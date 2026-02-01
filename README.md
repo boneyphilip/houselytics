@@ -4,7 +4,9 @@ A machine learning data application built with Python and Streamlit to analyse h
 
 ## Project Overview
 
-This project uses historical housing data from Ames, Iowa to analyse key factors affecting house prices and to build a predictive model that estimates property sale prices.
+Houselytics is a data-driven machine learning project designed to help a property owner understand housing prices in Ames, Iowa.
+
+The project analyses historical housing data to identify key factors that influence sale prices and builds a regression model to predict house prices. The final outcome supports informed decision-making when pricing inherited and future properties.
 
 ## Business Understanding
 
@@ -41,6 +43,13 @@ This will be addressed through data visualisation and statistical analysis.
 ### Business Requirement 2: Price Prediction
 The client wants to predict the sale price of her inherited houses and any future properties in Ames, Iowa.
 This will be addressed by building a supervised machine learning regression model.
+
+## Mapping Business Requirements to Deliverables
+
+| Business Requirement | Deliverable |
+|----------------------|------------|
+| Understand price drivers | Data analysis and visualisations |
+| Predict house prices | Machine learning regression model |
 
 ## Dataset
 
