@@ -14,16 +14,22 @@ def main() -> None:
         """
         <style>
         .block-container { padding-top: 2rem; padding-bottom: 2rem; }
-        .app-title { text-align:center; font-size:44px; font-weight:800; margin-bottom:0.2rem; }
-        .app-subtitle { text-align:center; color:#6b7280; margin-top:0; margin-bottom:1.8rem; }
+        .app-title { text-align:center; font-size:44px; font-weight:800;
+                     margin-bottom:0.2rem; }
+        .app-subtitle { text-align:center; color:#6b7280; margin-top:0;
+                        margin-bottom:1.8rem; }
         </style>
         """,
         unsafe_allow_html=True,
     )
 
-    st.markdown("<div class='app-title'>Houselytics</div>", unsafe_allow_html=True)
     st.markdown(
-        "<div class='app-subtitle'>AI Powered Property Valuation Dashboard</div>",
+        "<div class='app-title'>Houselytics</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "<div class='app-subtitle'>AI Powered Property Valuation "
+        "Dashboard</div>",
         unsafe_allow_html=True,
     )
 
