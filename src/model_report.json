@@ -1,0 +1,6 @@
+{
+  "model_name": "GradientBoostingRegressor",
+  "r2_train": 0.9615490463949853,
+  "r2_test": 0.8886191121839628,
+  "notes": "Scores measured in notebooks/04_modeling.ipynb"
+}
