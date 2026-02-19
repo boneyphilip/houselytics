@@ -5,15 +5,27 @@ import joblib
 from src.preprocess import build_feature_frame, preprocess_inherited
 
 
+@st.cache_resource
+def load_model():
+    """Load trained model once (cached)."""
+    return joblib.load("src/house_price_model.pkl")
+
+
+@st.cache_data
+def load_training_data():
+    """Load training data columns once (cached) to prevent feature mismatch."""
+    df = pd.read_csv("data/processed/clean_train.csv")
+    feature_cols = df.drop("SalePrice", axis=1).columns
+    train_features = df.drop("SalePrice", axis=1)
+    return feature_cols, train_features
+
+
 def render() -> None:
     st.header("Price Predictor")
 
-    # Load model + training feature columns
-    model = joblib.load("src/house_price_model.pkl")
-    train_df = pd.read_csv("data/processed/clean_train.csv")
-
-    feature_columns = train_df.drop("SalePrice", axis=1).columns
-    train_features_df = train_df.drop("SalePrice", axis=1)
+    # Load model + training feature columns (cached)
+    model = load_model()
+    feature_columns, train_features_df = load_training_data()
 
     tab1, tab2 = st.tabs(["Quick Estimate", "Pro Estimate"])
 
@@ -71,6 +83,7 @@ def render() -> None:
                 "GarageArea": garage_area,
                 "YearBuilt": year_built,
             }
+
             input_df = build_feature_frame(
                 user_values, feature_columns, train_features_df
             )
@@ -86,7 +99,7 @@ def render() -> None:
     # -------------------------
     with tab2:
         st.subheader("Pro Estimate")
-        st.write("More inputs = more realistic estimation feeling.")
+        st.write("More inputs = more detailed estimate.")
 
         col1, col2, col3 = st.columns(3)
 
@@ -202,6 +215,7 @@ def render() -> None:
                 "GarageArea": garage_area,
                 "OpenPorchSF": open_porch,
             }
+
             input_df = build_feature_frame(
                 user_values, feature_columns, train_features_df
             )
@@ -223,4 +237,4 @@ def render() -> None:
         out = inherited_df.copy()
         out["PredictedSalePrice"] = preds.round(0).astype(int)
 
-        st.dataframe(out, use_container_width=True)
+        st.dataframe(out, width="stretch")
