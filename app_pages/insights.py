@@ -10,7 +10,9 @@ def render() -> None:
     target = "SalePrice"
 
     feature_options = [c for c in train_df.columns if c != target]
-    feature = st.selectbox("Select a feature to compare with SalePrice", feature_options)
+    feature = st.selectbox(
+        "Select a feature to compare with SalePrice", feature_options
+    )
 
     st.caption("This interactive plot helps answer Business Requirement 1.")
 

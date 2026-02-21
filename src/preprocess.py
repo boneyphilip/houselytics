@@ -8,7 +8,9 @@ GARAGE_FINISH_MAP = {"Unf": 0, "RFn": 1, "Fin": 2}
 KITCHEN_QUAL_MAP = {"Po": 1, "Fa": 2, "TA": 3, "Gd": 4, "Ex": 5}
 
 
-def _safe_map(series: pd.Series, mapping: dict, default_value: int) -> pd.Series:
+def _safe_map(
+    series: pd.Series, mapping: dict, default_value: int
+) -> pd.Series:
     """
     Map categorical strings to numbers.
     Unknown values -> default_value.
@@ -60,16 +62,24 @@ def preprocess_inherited(
 
     # Encode if present and is text
     if "BsmtExposure" in df.columns:
-        df["BsmtExposure"] = _safe_map(df["BsmtExposure"], BSMT_EXPOSURE_MAP, 0)
+        df["BsmtExposure"] = _safe_map(
+            df["BsmtExposure"], BSMT_EXPOSURE_MAP, 0
+        )
 
     if "BsmtFinType1" in df.columns:
-        df["BsmtFinType1"] = _safe_map(df["BsmtFinType1"], BSMT_FIN_MAP, 0)
+        df["BsmtFinType1"] = _safe_map(
+            df["BsmtFinType1"], BSMT_FIN_MAP, 0
+        )
 
     if "GarageFinish" in df.columns:
-        df["GarageFinish"] = _safe_map(df["GarageFinish"], GARAGE_FINISH_MAP, 0)
+        df["GarageFinish"] = _safe_map(
+            df["GarageFinish"], GARAGE_FINISH_MAP, 0
+        )
 
     if "KitchenQual" in df.columns:
-        df["KitchenQual"] = _safe_map(df["KitchenQual"], KITCHEN_QUAL_MAP, 3)
+        df["KitchenQual"] = _safe_map(
+            df["KitchenQual"], KITCHEN_QUAL_MAP, 3
+        )
 
     # Fill missing values using training medians
     medians = train_features_df.median(numeric_only=True)

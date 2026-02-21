@@ -1,5 +1,5 @@
-import streamlit as st
 import json
+import streamlit as st
 
 
 def render() -> None:
@@ -21,5 +21,6 @@ def render() -> None:
     st.subheader("Conclusion")
     st.write(
         "This model demonstrates strong predictive performance and provides "
-        "tangible value by estimating sale prices for Lydia’s inherited houses and new user inputs."
+        "tangible value by estimating sale prices for Lydia’s inherited "
+        "houses and new user inputs."
     )

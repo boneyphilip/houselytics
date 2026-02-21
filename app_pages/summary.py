@@ -12,17 +12,17 @@ def render() -> None:
 
     st.subheader("Business Requirements")
     st.markdown(
-        """
-        1. **Understand correlations** between house attributes and SalePrice (data visualisations).
-        2. **Predict SalePrice** for Lydia’s 4 inherited houses and new user inputs (ML regression).
-        """
+        "1. **Understand correlations** between house attributes and "
+        "SalePrice (data visualisations).\n"
+        "2. **Predict SalePrice** for Lydia’s 4 inherited houses and "
+        "new user inputs (ML regression)."
     )
 
     st.subheader("What this dashboard provides")
     st.markdown(
         """
-        - A data insights area to explore relationships with SalePrice  
-        - A price predictor (Quick + Pro)  
-        - A model performance page showing evaluation results  
+        - A data insights area to explore relationships with SalePrice
+        - A price predictor (Quick + Pro)
+        - A model performance page showing evaluation results
         """
     )

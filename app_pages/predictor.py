@@ -91,7 +91,8 @@ def render() -> None:
 
             st.metric("Estimated Market Value", f"${pred:,.0f}")
             st.caption(
-                "Note: This is an ML estimate based on historical Ames housing data."
+                "Note: This is an ML estimate based on historical "
+                "Ames housing data."
             )
 
     # -------------------------
