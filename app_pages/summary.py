@@ -4,7 +4,7 @@ import streamlit as st
 def render() -> None:
     """Project Summary page."""
 
-    st.header("Project Summary")
+    st.title("Project Summary")
 
     # --- Introduction Section ---
     st.markdown(
@@ -49,7 +49,7 @@ def render() -> None:
 
     st.info(
         "**1. Data Insights (Business Understanding)**\n\n"
-        "Visualise relationships between attributes and `SalePrice` "
+        "Visualize relationships between attributes and `SalePrice` "
         "to highlight key drivers such as size, quality, and condition."
     )
 
@@ -78,7 +78,7 @@ def render() -> None:
         st.markdown(
             "**Available modes:**\n\n"
             "- **Quick Estimate:** Fewer inputs for a fast estimate.\n"
-            "- **Pro Estimate:** More inputs for a richer estimate experience.\n"
+            "- **Pro Estimate:** More inputs for a richer experience.\n"
             "- **Inherited Houses:** Batch prediction for Lydia’s 4 houses."
         )
 
@@ -86,7 +86,8 @@ def render() -> None:
         st.markdown(
             "**Model transparency:**\n\n"
             "The **Model Performance** page provides evaluation metrics "
-            "(e.g., R² and error measures) to support trust in the model outputs."
+            "(e.g., R² and error measures) to support trust in the "
+            "model outputs."
         )
 
     st.divider()
@@ -95,7 +96,10 @@ def render() -> None:
     with st.expander("Project scope and limitations"):
         st.write(
             "Predictions are based on historical Ames, Iowa data. "
-            "The model provides a statistical estimate, not a guaranteed sale price. "
-            "External factors such as local market demand, renovations, and interest "
-            "rates can impact real-world value."
+            "The model provides a statistical estimate, not a "
+            "guaranteed sale price. "
+        )
+        st.write(
+            "External factors such as local market demand, renovations, "
+            "and interest rates can impact real-world value."
         )
