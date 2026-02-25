@@ -1,10 +1,10 @@
 import streamlit as st
 
 from app_pages.summary import render as render_summary
+from app_pages.hypothesis import render as render_hypothesis
 from app_pages.insights import render as render_insights
 from app_pages.predictor import render as render_predictor
 from app_pages.performance import render as render_performance
-
 
 # -------------------------------------------------
 # PAGE CONFIG (MUST BE FIRST STREAMLIT COMMAND)
@@ -121,6 +121,7 @@ def main() -> None:
     # Pages
     pages = {
         "Project Summary": render_summary,
+        "Project Hypothesis": render_hypothesis,
         "Data Insights": render_insights,
         "Price Predictor": render_predictor,
         "Model Performance": render_performance,
