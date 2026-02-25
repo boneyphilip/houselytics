@@ -237,12 +237,24 @@ def render() -> None:
         )
         _plotly_chart(fig)
 
-        # Property Cards
+        # Property Cards (details help user identify each house)
         cols = st.columns(2)
+
         for i, price in enumerate(preds):
+            # Pick the row for this house from the inherited dataframe
+            row = inherited_df.iloc[i]
+
+            # Safely read YearBuilt and GrLivArea (if column exists)
+            year_built = int(row.get("YearBuilt", 0))
+            living_area = int(row.get("GrLivArea", 0))
+
             with cols[i % 2]:
-                st.info(f"**Property Identification: {i + 1}**")
-                st.markdown(f"**Appraisal:** ${price:,.0f}")
+                st.info(f"**Property Identification: House {i + 1}**")
+                st.markdown(
+                    f"**Living Area:** {living_area:,} sq ft  \n"
+                    f"**Year Built:** {year_built}"
+                )
+                st.markdown(f"**Appraisal Value:** ${price:,.0f}")
 
         with st.expander("Detailed Metadata"):
             out = inherited_df.copy()
