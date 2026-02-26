@@ -8,10 +8,12 @@ Goal:
 """
 
 from __future__ import annotations
+
 import joblib
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+
 from src.preprocess import build_feature_frame, preprocess_inherited
 
 
@@ -52,7 +54,7 @@ def _plotly_chart(fig) -> None:
     try:
         st.plotly_chart(fig, use_container_width=True)
     except TypeError:
-        st.plotly_chart(fig, width="stretch")
+        st.plotly_chart(fig)
 
 
 # ------------------------------------------------------------
@@ -65,7 +67,7 @@ def _safe_dataframe(dataframe: pd.DataFrame) -> None:
     try:
         st.dataframe(dataframe, use_container_width=True)
     except TypeError:
-        st.dataframe(dataframe, width="stretch")
+        st.dataframe(dataframe)
 
 
 # ------------------------------------------------------------
@@ -120,6 +122,9 @@ def render() -> None:
             "- **Lot Size**: total land area of the property."
         )
 
+    # Make year limits future-safe (no hardcoded 2026)
+    max_year = int(pd.Timestamp.today().year)
+
     model = load_model()
     feature_columns, train_features_df = load_training_data()
 
@@ -146,16 +151,26 @@ def render() -> None:
             )
             gr_liv_area = st.number_input(
                 "Total Living Area (sq ft)",
-                300, 6000, 1500, step=50,
+                300,
+                6000,
+                1500,
+                step=50,
                 key="quick_area",
             )
         with col_q2:
             year_built = st.number_input(
-                "Year Built", 1800, 2026, 2000,
+                "Year Built",
+                1800,
+                max_year,
+                2000,
                 key="quick_yr",
             )
             garage_area = st.number_input(
-                "Garage Size (sq ft)", 0, 1500, 400, step=25,
+                "Garage Size (sq ft)",
+                0,
+                1500,
+                400,
+                step=25,
                 key="quick_gar",
             )
 
@@ -167,13 +182,15 @@ def render() -> None:
                 "YearBuilt": year_built,
             }
             input_df = build_feature_frame(
-                user_values, feature_columns, train_features_df
+                user_values,
+                feature_columns,
+                train_features_df,
             )
-            pred = model.predict(input_df)[0]
+            pred = float(model.predict(input_df)[0])
             _show_prediction_result(
                 "Quick Estimate Result",
                 pred,
-                "Quick Estimate uses a smaller set of inputs for speed."
+                "Quick Estimate uses a smaller set of inputs for speed.",
             )
 
     # --- TAB 2: DETAILED ANALYSIS ---
@@ -185,7 +202,7 @@ def render() -> None:
         with c1:
             ov_qual = st.slider("Quality (1-10)", 1, 10, 5)
             ov_cond = st.slider("Condition (1-9)", 1, 9, 5)
-            yr_blt = st.number_input("Year Built", 1800, 2026, 2000)
+            yr_blt = st.number_input("Year Built", 1800, max_year, 2000)
         with c2:
             liv_area = st.number_input("Living Area (sq ft)", 300, 6000, 1500)
             lot_size = st.number_input("Lot Size (sq ft)", 1000, 50000, 9000)
@@ -193,24 +210,30 @@ def render() -> None:
         with c3:
             bsmt = st.number_input("Basement (sq ft)", 0, 5000, 900)
             gar = st.number_input("Garage (sq ft)", 0, 1500, 400)
-            yr_rem = st.number_input("Remodel Year", 1800, 2026, 2005)
+            yr_rem = st.number_input("Remodel Year", 1800, max_year, 2005)
 
         if st.button("Run Detailed Valuation", type="primary"):
             user_values = {
-                "OverallQual": ov_qual, "OverallCond": ov_cond,
-                "YearBuilt": yr_blt, "YearRemodAdd": yr_rem,
-                "GrLivArea": liv_area, "BedroomAbvGr": bed,
-                "LotArea": lot_size, "TotalBsmtSF": bsmt,
-                "GarageArea": gar
+                "OverallQual": ov_qual,
+                "OverallCond": ov_cond,
+                "YearBuilt": yr_blt,
+                "YearRemodAdd": yr_rem,
+                "GrLivArea": liv_area,
+                "BedroomAbvGr": bed,
+                "LotArea": lot_size,
+                "TotalBsmtSF": bsmt,
+                "GarageArea": gar,
             }
             input_df = build_feature_frame(
-                user_values, feature_columns, train_features_df
+                user_values,
+                feature_columns,
+                train_features_df,
             )
-            pred = model.predict(input_df)[0]
+            pred = float(model.predict(input_df)[0])
             _show_prediction_result(
                 "Detailed Analysis Result",
                 pred,
-                "Detailed Analysis uses more property attributes."
+                "Detailed Analysis uses more property attributes.",
             )
 
     # --- INHERITED PORTFOLIO ---
@@ -219,36 +242,50 @@ def render() -> None:
 
     if st.button("Calculate Portfolio Value", key="btn_inherited"):
         inherited_df = pd.read_csv("data/raw/inherited_houses.csv")
+
         ready_df = preprocess_inherited(
-            inherited_df, feature_columns, train_features_df
+            inherited_df,
+            feature_columns,
+            train_features_df,
         )
-        preds = model.predict(ready_df)
+        preds = model.predict(ready_df).astype(float)
 
         st.metric("Aggregate Portfolio Value", f"${preds.sum():,.0f}")
 
         # Summary Chart
-        chart_df = pd.DataFrame({
-            "Property": [f"House {i+1}" for i in range(len(preds))],
-            "Value": preds.round(0)
-        })
+        chart_df = pd.DataFrame(
+            {
+                "Property": [f"House {i + 1}" for i in range(len(preds))],
+                "Value": preds.round(0),
+            }
+        )
         fig = px.bar(
-            chart_df, x="Property", y="Value", color="Value",
-            color_continuous_scale="Viridis", template="plotly_dark"
+            chart_df,
+            x="Property",
+            y="Value",
+            color="Value",
+            color_continuous_scale="Viridis",
+            template="plotly_dark",
         )
         _plotly_chart(fig)
 
-        # Property Cards (details help user identify each house)
-        cols = st.columns(2)
+        # ------------------------------------------------------------
+        # Property Cards (2x2 grid so it looks clean and premium)
+        # ------------------------------------------------------------
+        row1_c1, row1_c2 = st.columns(2)
+        row2_c1, row2_c2 = st.columns(2)
 
-        for i, price in enumerate(preds):
-            # Pick the row for this house from the inherited dataframe
+        card_slots = [row1_c1, row1_c2, row2_c1, row2_c2]
+
+        # Safety: show only first 4 properties for a 2x2 layout
+        for i, price in enumerate(preds[:4]):
             row = inherited_df.iloc[i]
 
-            # Safely read YearBuilt and GrLivArea (if column exists)
             year_built = int(row.get("YearBuilt", 0))
             living_area = int(row.get("GrLivArea", 0))
 
-            with cols[i % 2]:
+            slot = card_slots[i]
+            with slot:
                 st.info(f"**Property Identification: House {i + 1}**")
                 st.markdown(
                     f"**Living Area:** {living_area:,} sq ft  \n"
