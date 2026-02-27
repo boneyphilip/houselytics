@@ -42,12 +42,17 @@ def load_train_data() -> pd.DataFrame:
 # Helper for responsive Plotly charts
 # -----------------------------
 def _plotly_chart(fig) -> None:
-    # Streamlit is moving from use_container_width -> width="stretch".
-    # This try/except works on both old and new versions.
+    """
+    Render Plotly charts in a responsive way.
+
+    Streamlit historically used: use_container_width=True
+    Newer versions are moving toward: width="stretch"
+    This helper works for both.
+    """
     try:
-        st.plotly_chart(fig, width="stretch")
-    except TypeError:
         st.plotly_chart(fig, use_container_width=True)
+    except TypeError:
+        st.plotly_chart(fig, width="stretch")
 
 
 def render() -> None:
@@ -196,6 +201,8 @@ def render() -> None:
         "and the Model's Guess. This chart helps identify if the model "
         "is biased toward over-pricing or under-pricing certain houses."
     )
+
+    st.latex(r"\text{Residual} = y_{\text{actual}} - y_{\text{predicted}}")
 
     # Bullet points to explain how to read the chart
     st.write(
