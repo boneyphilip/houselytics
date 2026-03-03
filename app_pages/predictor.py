@@ -39,22 +39,27 @@ def load_training_data():
     Ensures input frames match model requirements.
     """
     df = pd.read_csv("data/processed/clean_train.csv")
+
+    # Change 8: Defensive robustness check
+    if "SalePrice" not in df.columns:
+        raise ValueError("SalePrice column is missing from clean_train.csv")
+
     feature_cols = df.drop("SalePrice", axis=1).columns
     train_features = df.drop("SalePrice", axis=1)
     return feature_cols, train_features
 
 
 # ------------------------------------------------------------
-# 3) Plotly helper (future-safe width handling)
+# 3) Plotly helper (Change 1: Updated for consistency)
 # ------------------------------------------------------------
 def _plotly_chart(fig) -> None:
     """
     Render Plotly charts in a responsive way.
     """
     try:
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     except TypeError:
-        st.plotly_chart(fig)
+        st.plotly_chart(fig, use_container_width=True)
 
 
 # ------------------------------------------------------------
@@ -71,7 +76,7 @@ def _safe_dataframe(dataframe: pd.DataFrame) -> None:
 
 
 # ------------------------------------------------------------
-# 5) Small helper for result display
+# 5) Small helper for result display (Change 4: Updated info)
 # ------------------------------------------------------------
 def _show_prediction_result(
     title: str,
@@ -86,8 +91,9 @@ def _show_prediction_result(
     st.metric("Estimated Market Value", f"${predicted_value:,.0f}")
     st.caption(note)
     st.info(
-        "This value is a machine learning estimate based on historical "
-        "housing data from Ames, Iowa. Real market prices may differ."
+        "This value is a final trained model estimate based on historical "
+        "housing data from Ames, Iowa. It should be used as pricing "
+        "guidance rather than a guaranteed sale price."
     )
 
 
@@ -99,21 +105,24 @@ def render() -> None:
     Main function to display the Price Predictor page.
     """
     st.title("Property Valuation Tool")
+
+    # Change 2: Strengthened intro
     st.markdown(
-        "Ames, Iowa House Price Prediction Service. "
-        "Enter property specifications below to generate a market estimate."
+        "This page supports **Business Requirement 2** by using the final "
+        "trained regression model to estimate house sale prices in Ames, "
+        "Iowa. Use the tools below to value individual properties or "
+        "Lydia's inherited portfolio."
     )
 
-    # Helpful user instructions
+    # Change 3: Fix wording in "How to use"
     with st.expander("How to use this page"):
         st.write(
             "1. Use **Quick Estimate** for a fast result.\n"
-            "2. Use **Detailed Analysis** for a professional estimate.\n"
-            "3. Use **Inherited Appraisal** for Lydia's portfolio.\n"
+            "2. Use **Detailed Analysis** for a richer estimate.\n"
+            "3. Use **Inherited Property Appraisal** for Lydia's portfolio.\n"
             "4. Treat all results as estimates, not guaranteed prices."
         )
 
-    # Definitions for confusing terms
     with st.expander("Field definitions"):
         st.write(
             "- **Construction Quality**: overall build and finish level.\n"
@@ -122,9 +131,7 @@ def render() -> None:
             "- **Lot Size**: total land area of the property."
         )
 
-    # Make year limits future-safe (no hardcoded 2026)
     max_year = int(pd.Timestamp.today().year)
-
     model = load_model()
     feature_columns, train_features_df = load_training_data()
 
@@ -151,27 +158,16 @@ def render() -> None:
             )
             gr_liv_area = st.number_input(
                 "Total Living Area (sq ft)",
-                300,
-                6000,
-                1500,
-                step=50,
-                key="quick_area",
+                300, 6000, 1500, step=50, key="quick_area",
             )
         with col_q2:
             year_built = st.number_input(
                 "Year Built",
-                1800,
-                max_year,
-                2000,
-                key="quick_yr",
+                1800, max_year, 2000, key="quick_yr",
             )
             garage_area = st.number_input(
                 "Garage Size (sq ft)",
-                0,
-                1500,
-                400,
-                step=25,
-                key="quick_gar",
+                0, 1500, 400, step=25, key="quick_gar",
             )
 
         if st.button("Generate Valuation", key="btn_quick"):
@@ -182,9 +178,7 @@ def render() -> None:
                 "YearBuilt": year_built,
             }
             input_df = build_feature_frame(
-                user_values,
-                feature_columns,
-                train_features_df,
+                user_values, feature_columns, train_features_df,
             )
             pred = float(model.predict(input_df)[0])
             _show_prediction_result(
@@ -214,20 +208,14 @@ def render() -> None:
 
         if st.button("Run Detailed Valuation", type="primary"):
             user_values = {
-                "OverallQual": ov_qual,
-                "OverallCond": ov_cond,
-                "YearBuilt": yr_blt,
-                "YearRemodAdd": yr_rem,
-                "GrLivArea": liv_area,
-                "BedroomAbvGr": bed,
-                "LotArea": lot_size,
-                "TotalBsmtSF": bsmt,
+                "OverallQual": ov_qual, "OverallCond": ov_cond,
+                "YearBuilt": yr_blt, "YearRemodAdd": yr_rem,
+                "GrLivArea": liv_area, "BedroomAbvGr": bed,
+                "LotArea": lot_size, "TotalBsmtSF": bsmt,
                 "GarageArea": gar,
             }
             input_df = build_feature_frame(
-                user_values,
-                feature_columns,
-                train_features_df,
+                user_values, feature_columns, train_features_df,
             )
             pred = float(model.predict(input_df)[0])
             _show_prediction_result(
@@ -238,52 +226,42 @@ def render() -> None:
 
     # --- INHERITED PORTFOLIO ---
     st.divider()
-    st.subheader("Inherited Property Appraisal")
+    st.subheader("Inherited Portfolio Appraisal")
 
     if st.button("Calculate Portfolio Value", key="btn_inherited"):
         inherited_df = pd.read_csv("data/raw/inherited_houses.csv")
-
         ready_df = preprocess_inherited(
-            inherited_df,
-            feature_columns,
-            train_features_df,
+            inherited_df, feature_columns, train_features_df,
         )
         preds = model.predict(ready_df).astype(float)
 
         st.metric("Aggregate Portfolio Value", f"${preds.sum():,.0f}")
 
-        # Summary Chart
-        chart_df = pd.DataFrame(
-            {
-                "Property": [f"House {i + 1}" for i in range(len(preds))],
-                "Value": preds.round(0),
-            }
+        # Change 5: Success statement
+        st.success(
+            "This portfolio estimate supports Lydia's use-case by valuing "
+            "her four inherited houses as a combined portfolio and as "
+            "individual properties."
         )
+
+        chart_df = pd.DataFrame({
+            "Property": [f"House {i + 1}" for i in range(len(preds))],
+            "Value": preds.round(0),
+        })
         fig = px.bar(
-            chart_df,
-            x="Property",
-            y="Value",
-            color="Value",
-            color_continuous_scale="Viridis",
-            template="plotly_dark",
+            chart_df, x="Property", y="Value", color="Value",
+            color_continuous_scale="Viridis", template="plotly_dark",
         )
         _plotly_chart(fig)
 
-        # ------------------------------------------------------------
-        # Property Cards (2x2 grid so it looks clean and premium)
-        # ------------------------------------------------------------
         row1_c1, row1_c2 = st.columns(2)
         row2_c1, row2_c2 = st.columns(2)
-
         card_slots = [row1_c1, row1_c2, row2_c1, row2_c2]
 
-        # Safety: show only first 4 properties for a 2x2 layout
         for i, price in enumerate(preds[:4]):
             row = inherited_df.iloc[i]
-
             year_built = int(row.get("YearBuilt", 0))
             living_area = int(row.get("GrLivArea", 0))
-
             slot = card_slots[i]
             with slot:
                 st.info(f"**Property Identification: House {i + 1}**")
@@ -297,3 +275,8 @@ def render() -> None:
             out = inherited_df.copy()
             out["Predicted_Value"] = preds.round(0).astype(int)
             _safe_dataframe(out)
+            # Change 6: Caption
+            st.caption(
+                "This table shows the original inherited property records "
+                "with their predicted appraisal values."
+            )
