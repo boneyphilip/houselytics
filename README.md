@@ -1,8 +1,22 @@
 # Houselytics
 
-Houselytics is a predictive analytics dashboard built with **Python**, **Streamlit**, and **scikit-learn** to analyse housing value drivers and estimate house sale prices in **Ames, Iowa, USA**.
+Houselytics is a predictive analytics web application built with Python, Streamlit, Pandas, Plotly, and scikit-learn. The project analyses the Ames, Iowa housing dataset to identify key property value drivers and predict house sale prices using a trained Gradient Boosting regression model.
 
-The project was developed around a business-focused client scenario in which **Lydia Doe** needs support in understanding the local Ames housing market before valuing and potentially selling four inherited properties. The dashboard combines **data analysis**, **interactive visualisations**, and a **trained regression model** to support better pricing decisions.
+The application was developed around a business scenario where a client needs to estimate the value of inherited houses and understand which features most influence market price. The dashboard combines exploratory data analysis, hypothesis validation, model performance evaluation, and an interactive price prediction tool.
+
+### Key Technical Highlights
+
+* Built an interactive Streamlit dashboard with multiple user-focused pages.
+* Cleaned and prepared housing data for machine learning.
+* Trained a Gradient Boosting Regressor for price prediction.
+* Achieved strong model performance with approximately 0.90 test R².
+* Added visual model evaluation using actual-vs-predicted charts, residual analysis, and feature importance.
+* Designed the dashboard for non-technical users with clear explanations and business-focused insights.
+
+### Technologies Used
+
+Python, Streamlit, Pandas, NumPy, Plotly, scikit-learn, Joblib, Git, GitHub, Heroku.
+
 
 ---
 
